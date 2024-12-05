@@ -14,14 +14,10 @@ artist_id = "3TVXtAsR1Inumwj472S9r4"
 
 response = con.artist_top_tracks(artist_id)
 if response:
-  # We keep the "tracks" object of the answer
   tracks = response["tracks"]
-  # We select, for each song, the data we are interested in and discard the rest
   tracks = [{k: (v/(1000*60))%60 if k == "duration_ms" else v for k, v in track.items() if k in ["name", "popularity", "duration_ms"]} for track in tracks]
 
 tracks_df = pd.DataFrame.from_records(tracks)
 tracks_df.sort_values(["popularity"], inplace = True)
 
 print(tracks_df.head(3))
-
-
